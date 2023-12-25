@@ -1,12 +1,14 @@
 package api_users.action.post;
 
-
 import api_users.infra.api.ApiRequestsPage;
 import api_users.infra.api.ApiStrings;
+import com.google.gson.Gson;
 
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpResponse;
+import java.util.HashMap;
+import java.util.Map;
 
 public class PostNewUser {
 
@@ -16,15 +18,22 @@ public class PostNewUser {
 
             URI uri = new URI(ApiStrings.URI + ApiStrings.PORT + "/" + ApiStrings.USERS_PATH);
 
-        String jsonBody = "{\"" + ApiStrings.NAME + "\":\"" + apiStrings.setUserName("John Doe") + "\",\""
-                + ApiStrings.ID + "\":\""
-                + apiStrings.setUserID("15") + "\"}";
+            String userName = apiStrings.setUserName("John Doe");
+            String userId = apiStrings.setUserID("15");
 
-            HttpClient httpClient = HttpClient.newHttpClient();
+            Map<String, String> jsonBody = new HashMap<>();
+            jsonBody.put(ApiStrings.NAME, userName);
+            jsonBody.put(ApiStrings.ID, userId);
 
-        ApiRequestsPage apiRequestsPage = new ApiRequestsPage();
-            HttpResponse<String> response = apiRequestsPage.performPostRequest(uri,jsonBody);
 
+            Gson gson = new Gson();
+            String requestBody = gson.toJson(jsonBody);
+
+
+            ApiRequestsPage apiRequestsPage = new ApiRequestsPage();
+
+
+            HttpResponse<String> response = apiRequestsPage.performPostRequest(uri, requestBody);
 
             String responseData = response.body();
             System.out.println("Response: " + responseData);

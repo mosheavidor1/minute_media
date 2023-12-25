@@ -1,7 +1,5 @@
 package api_users.infra.api;
 
-import api_users.infra.api.json.JsonBody;
-
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -18,11 +16,11 @@ public class ApiRequestsPage implements ApiMethods {
 
 
     @Override
-    public HttpResponse<String> performPostRequest(URI uri, String jsonBody) throws Exception {
+    public HttpResponse<String> performPostRequest(URI uri,String jsonString) throws Exception {
         HttpRequest postRequest = HttpRequest.newBuilder()
                 .uri(uri)
                 .header("Content-Type", "application/json")
-                .POST(HttpRequest.BodyPublishers.ofString(jsonBody))
+                .POST(HttpRequest.BodyPublishers.ofString(jsonString))
                 .build();
 
         return httpClient.send(postRequest, HttpResponse.BodyHandlers.ofString());
