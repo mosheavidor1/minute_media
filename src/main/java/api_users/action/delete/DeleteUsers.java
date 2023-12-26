@@ -1,40 +1,31 @@
+
 package api_users.action.delete;
 
+import api_users.infra.api.ApiRequestsPage;
+import api_users.infra.api.ApiStrings;
+import api_users.infra.api.messages.ResponseHandler;
+
 import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 public class DeleteUsers {
 
+public static void deleteUserFunction() {
+    try {
+        ApiStrings apiStrings = new ApiStrings();
 
+        URI uri = new URI(ApiStrings.URI + ApiStrings.PORT +
+                "/" + ApiStrings.USERS_PATH + "/" + apiStrings.setUserID("55"));
 
+        ApiRequestsPage apiRequestsPage = new ApiRequestsPage();
 
-        public static void main(String[] args) {
-            try {
+        HttpResponse<String> response = apiRequestsPage.performDeleteRequest(uri);
 
-                URI uri = new URI("http://localhost:5000/users/3");
+        ResponseHandler.handleResponse(response);
 
-
-                HttpClient httpClient = HttpClient.newHttpClient();
-
-
-                HttpRequest deleteRequest = HttpRequest.newBuilder()
-                        .uri(uri)
-                        .DELETE()
-                        .build();
-
-
-                HttpResponse<String> deleteResponse = httpClient.send(deleteRequest, HttpResponse.BodyHandlers.ofString());
-
-
-                String responseData = deleteResponse.body();
-                System.out.println("DELETE Response: " + responseData);
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+    } catch (Exception e) {
+        e.printStackTrace();
     }
-
+}
+}
 

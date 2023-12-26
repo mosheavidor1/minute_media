@@ -1,45 +1,45 @@
+
 package api_users.action.put;
 
+import api_users.infra.api.ApiRequestsPage;
+import api_users.infra.api.ApiStrings;
+import api_users.infra.api.messages.ResponseHandler;
+import com.google.gson.Gson;
 
 import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.HashMap;
+import java.util.Map;
 
 public class EditUsers {
 
+public static void editUserFunction() {
+    try {
+        ApiStrings apiStrings = new ApiStrings();
 
+        String editedId = apiStrings.setUserID("55");
 
+        URI uri = new URI(ApiStrings.URI + ApiStrings.PORT + "/" + ApiStrings.USERS_PATH + "/"
+                + editedId);
 
-        public static void main(String[] args) {
-            try {
+        String updatedUserName = apiStrings.setUserName("Mike");
 
-                URI uri = new URI("http://localhost:5000/users/3");
+        Map<String, String> jsonBody = new HashMap<>();
+        jsonBody.put(ApiStrings.NAME, updatedUserName);
+        jsonBody.put(ApiStrings.ID, editedId);
 
+        Gson gson = new Gson();
+        String requestBody = gson.toJson(jsonBody);
 
-                String jsonBody = "{\"Name\":\"moshe\"}";
+        ApiRequestsPage apiRequestsPage = new ApiRequestsPage();
 
+        HttpResponse<String> response = apiRequestsPage.performPutRequest(uri, requestBody);
 
-                HttpClient httpClient = HttpClient.newHttpClient();
+        ResponseHandler.handleResponse(response);
 
-
-                HttpRequest putRequest = HttpRequest.newBuilder()
-                        .uri(uri)
-                        .header("Content-Type", "application/json")
-                        .PUT(HttpRequest.BodyPublishers.ofString(jsonBody))
-                        .build();
-
-
-                HttpResponse<String> putResponse = httpClient.send(putRequest, HttpResponse.BodyHandlers.ofString());
-
-
-                String responseData = putResponse.body();
-                System.out.println("PUT Response: " + responseData);
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+    } catch (Exception e) {
+        e.printStackTrace();
     }
-
+}
+}
 

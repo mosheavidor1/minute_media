@@ -1,40 +1,34 @@
-package api_users.action.get;
+package api_users.action.get;//package api_users.action.get;
+
+
+import api_users.infra.api.ApiRequestsPage;
+import api_users.infra.api.ApiStrings;
+import api_users.infra.api.messages.ResponseHandler;
 
 import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-
 
 public class GetUsers {
 
-        public static void main(String[] args) {
-            try {
+public static void getUsersFunction() {
+    try {
+        ApiStrings apiStrings = new ApiStrings();
 
-                URI uri = new URI("http://localhost:5000/users");
-
-
-                HttpClient httpClient = HttpClient.newHttpClient();
-
-
-                HttpRequest getRequest = HttpRequest.newBuilder()
-                        .uri(uri)
-                        .GET()
-                        .build();
+        //Get specific user:
+        // URI uri = new URI(ApiStrings.URI + ApiStrings.PORT + "/" + ApiStrings.USERS_PATH + "/" + apiStrings.setUserID("5"));
 
 
-                HttpResponse<String> getResponse = httpClient.send(getRequest, HttpResponse.BodyHandlers.ofString());
+        //Get all users:
+        URI uri = new URI(ApiStrings.URI + ApiStrings.PORT + "/" + ApiStrings.USERS_PATH);
 
+        ApiRequestsPage apiRequestsPage = new ApiRequestsPage();
+        HttpResponse<String> response = apiRequestsPage.performGetRequest(uri);
 
-                String responseData = getResponse.body();
-                System.out.println("GET Response: " + responseData);
+        ResponseHandler.handleResponse(response);
 
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+    } catch (Exception e) {
+        e.printStackTrace();
     }
-
-
-
+}
+}
 
